@@ -1,0 +1,30 @@
+{
+  "name": "typolar-template",
+  "version": "0.1.0",
+  "description": "Template parser for Typolar",
+  "main": "src/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "mocha \"test/*.spec.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/seancheung/typolar-template.git"
+  },
+  "keywords": [
+    "typolar",
+    "template",
+    "typescript"
+  ],
+  "author": "Sean Cheung",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seancheung/typolar-template/issues"
+  },
+  "homepage": "https://github.com/seancheung/typolar-template#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.7.0",
+    "mocha": "^5.2.0"
+  }
+}
