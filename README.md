@@ -1,9 +1,34 @@
 # typolar-template
+
+[![Master Build][travis-master]][travis-url]
+[![Develop Build][travis-develop]][travis-url]
+
 Template parser for Typolar
+
+[travis-master]: https://img.shields.io/travis/seancheung/typolar-template/master.svg?label=master
+[travis-develop]: https://img.shields.io/travis/seancheung/typolar-template/develop.svg?label=develop
+[travis-url]: https://travis-ci.org/seancheung/typolar-template
+
+## Install
+
+```bash
+npm i typolar-template
+```
+
+## Usage
+
+```javascript
+const parse = require('typolar-template');
+const template = '//template text';
+const vars = {/* variables used in template */};
+const content = parse(template, vars);
+```
+
+### Syntax
 
 Conditional:
 
-```c#
+```perl
 Pariatur officiis dolores soluta nisi rerum sapiente aut ut.
 #if a > b
 Et et non.
@@ -21,7 +46,10 @@ Reference
 
 ```less
 @anchor(name)
-Aperiam aperiam et sint consequuntur minima est non. Sed animi laboriosam nulla qui enim odio soluta. Suscipit consectetur voluptatem perferendis et. Consequatur illo natus. Numquam sit repellendus deserunt rerum velit optio ex. Blanditiis veniam recusandae magni.
+Aperiam aperiam et sint consequuntur minima est non.
+Sed animi laboriosam nulla qui enim odio soluta. Suscipit consectetur voluptatem perferendis et.
+Consequatur illo natus.
+Numquam sit repellendus deserunt rerum velit optio ex. Blanditiis veniam recusandae magni.
 @end
 
 @ref(name)
@@ -35,8 +63,10 @@ ${code}
 
 Piping
 
-```bash
+```html
 <%arg|function1|function2%>
 ```
 
-reference -> conditional -> eval -> piping
+Rendering order:
+
+reference -> conditional -> interpolate -> piping
