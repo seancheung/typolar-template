@@ -15,10 +15,10 @@ describe('interpo test', function() {
     });
 
     it('expect safe interpo to be parsed correctly', function() {
-        const template = '${a}';
+        const template = '${a}${c}';
 
         const text = parse(template, this.sandbox, { safeInterpo: true });
-        expect(text).to.eq('1');
+        expect(text).to.eq('1${c}');
     });
 
     it('expect ternary interpo to be parsed correctly', function() {
