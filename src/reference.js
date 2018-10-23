@@ -33,7 +33,7 @@ class Ref extends Line {
 
 }
 
-module.exports = function(template) {
+module.exports = function(template, options) {
     const lines = template.split('\n');
     const map = new Map();
     let current;
@@ -75,6 +75,9 @@ module.exports = function(template) {
             line.text.replace(/@ref\(\s*(.+?)\s*\)/gi, (_, name) => {
                 const ref = map.get(name);
                 if (!ref) {
+                    if (options && options.silent) {
+                        return _;
+                    }
                     throw new Error(
                         `ref name "${name}" not found at line ${line.i}: ${
                             line.text

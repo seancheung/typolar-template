@@ -1,6 +1,6 @@
 const exec = require('./exec');
 
-module.exports = function(template, sandbox) {
+module.exports = function(template, sandbox, options) {
     return template.replace(/<%(.+?)%>/g, (_, code) => {
         const [arg, ...funcs] = code.split('|');
 
@@ -10,6 +10,9 @@ module.exports = function(template, sandbox) {
                 sandbox
             );
         } catch (error) {
+            if (options && options.silent) {
+                return _;
+            }
             throw new Error(
                 `error occured when executing: "${_}": ${error.message}`
             );
