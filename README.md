@@ -45,7 +45,7 @@ Distinctio porro repellat optio consectetur vel id aut odio.
 Reference
 
 ```less
-@anchor(name)
+@set(name)
 Aperiam aperiam et sint consequuntur minima est non.
 Sed animi laboriosam nulla qui enim odio soluta. Suscipit consectetur voluptatem perferendis et.
 Consequatur illo natus.

@@ -20,15 +20,18 @@ describe('parser test', function() {
 
     it('expect template to be parsed correctly', function() {
         const template = `heading line
+        @set(cap)
+capitalized
+        @end
         #if a < b
         \${a*2} equals <%a|double%>
             #if status
-        "\${msg}" inversed and capitalized: <%msg|reverse|upper%>
+        "\${msg}" inversed and @ref(cap): <%msg|reverse|upper%>
             #else
         "\${msg}" reversed: <%msg|reverse%>
             #end
         #else
-        "\${msg}" capitalized: <%msg|upper%>
+        "\${msg}" @ref(cap): <%msg|upper%>
         #end
         tail line`;
 
