@@ -14,6 +14,13 @@ describe('interpo test', function() {
         expect(text).to.eq('3');
     });
 
+    it('expect safe interpo to be parsed correctly', function() {
+        const template = '${a}';
+
+        const text = parse(template, this.sandbox, { safeInterpo: true });
+        expect(text).to.eq('1');
+    });
+
     it('expect ternary interpo to be parsed correctly', function() {
         const template = '${ a > b? "yes" : "no"}\nstatus = ${status}';
 
