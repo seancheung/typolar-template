@@ -29,9 +29,7 @@ class Block extends Node {
     *exec(sandbox) {
         for (const node of this.nodes) {
             if (node instanceof Block) {
-                for (const item of node.exec(sandbox)) {
-                    yield item;
-                }
+                yield* node.exec(sandbox);
             } else {
                 yield node.dump();
             }
@@ -56,13 +54,16 @@ class IfBlock extends Block {
         super(i, line);
         this.code = line.replace(/^\s*#\s*if\s+(.+)\s*$/i, '$1');
         this.else = null;
+        this.elifs = [];
     }
 
     push(node) {
         if (this.end) {
             throw new Error(`invalid syntax at line ${node.i}`);
         }
-        if (node instanceof ElseBlock) {
+        if (node instanceof ElifBlock) {
+            this.elifs.push(node);
+        } else if (node instanceof ElseBlock) {
             this.else = node;
         } else if (node instanceof EndNode) {
             this.end = node;
@@ -74,12 +75,20 @@ class IfBlock extends Block {
     *exec(sandbox) {
         const success = exec(this.code, sandbox);
         if (success) {
-            for (const node of super.exec(sandbox)) {
-                yield node;
+            yield* super.exec(sandbox);
+        } else {
+            let block;
+            for (const elif of this.elifs) {
+                if (elif.test(sandbox)) {
+                    block = elif;
+                    break;
+                }
             }
-        } else if (this.else) {
-            for (const item of this.else.exec(sandbox)) {
-                yield item;
+            if (!block) {
+                block = this.else;
+            }
+            if (block) {
+                yield* block.exec(sandbox);
             }
         }
     }
@@ -87,6 +96,21 @@ class IfBlock extends Block {
 }
 
 class ElseBlock extends Block {}
+
+class ElifBlock extends Block {
+
+    constructor(i, line) {
+        super(i, line);
+        this.code = line.replace(/^\s*#\s*elif\s+(.+)\s*$/i, '$1');
+    }
+
+    test(sandbox) {
+        const success = exec(this.code, sandbox);
+
+        return success;
+    }
+
+}
 
 module.exports = function(template, sandbox) {
     const lines = template.split('\n');
@@ -108,11 +132,27 @@ module.exports = function(template, sandbox) {
                 const child = new IfBlock(i, line);
                 readBlock(child);
                 block.push(child);
+            } else if (/^\s*#\s*elif/i.test(line)) {
+                if (block instanceof IfBlock) {
+                    const child = new ElifBlock(i, line);
+                    readBlock(child);
+                    block.push(child);
+                } else if (block instanceof ElifBlock) {
+                    i--;
+
+                    return;
+                } else {
+                    throw new Error(`invalid syntax at line ${i}`);
+                }
             } else if (/^\s*#\s*else/i.test(line)) {
                 if (block instanceof IfBlock) {
                     const child = new ElseBlock(i, line);
                     readBlock(child);
                     block.push(child);
+                } else if (block instanceof ElifBlock) {
+                    i--;
+
+                    return;
                 } else {
                     throw new Error(`invalid syntax at line ${i}`);
                 }

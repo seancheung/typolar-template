@@ -18,9 +18,11 @@ npm i typolar-template
 ## Usage
 
 ```javascript
-const parse = require('typolar-template');
-const template = '//template text';
-const vars = {/* variables used in template */};
+const parse = require("typolar-template");
+const template = "//template text";
+const vars = {
+  /* variables used in template */
+};
 const content = parse(template, vars);
 ```
 
@@ -32,6 +34,8 @@ Conditional:
 Pariatur officiis dolores soluta nisi rerum sapiente aut ut.
 #if a > b
 Et et non.
+#elif a === b
+Illo consequuntur dolores sit.
 #else
 Soluta libero dolores saepe dolorem repellat illo.
     #if x > y
@@ -42,17 +46,17 @@ Qui nemo qui consectetur eum corrupti omnis qui.
 Distinctio porro repellat optio consectetur vel id aut odio.
 ```
 
-Reference
+Reference/Macro
 
 ```less
-@set(name)
+@set (name)
 Aperiam aperiam et sint consequuntur minima est non.
 Sed animi laboriosam nulla qui enim odio soluta. Suscipit consectetur voluptatem perferendis et.
 Consequatur illo natus.
 Numquam sit repellendus deserunt rerum velit optio ex. Blanditiis veniam recusandae magni.
 @end
 
-@ref(name)
+@ref(name);
 ```
 
 Interpolate
@@ -61,7 +65,7 @@ Interpolate
 ${code}
 ```
 
-Piping
+Piping/Filter
 
 ```html
 <%arg|function1|function2%>

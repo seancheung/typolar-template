@@ -49,4 +49,63 @@ describe('condition test', function() {
 
         expect(() => parse(template, this.sandbox)).to.throw('invalid');
     });
+
+    it('expect elif to be parsed correctly', function() {
+        const template = `line 1
+        #if a > b
+        line 2
+        #elif status
+        line 3
+        #else
+        line 4
+        #end
+        line 5`;
+
+        const text = parse(template, this.sandbox);
+        expect(text).to.eq(`line 1
+        line 3
+        line 5`);
+    });
+
+    it('expect multiple elif to be parsed correctly', function() {
+        const template = `line 1
+        #if a > b
+        line 2
+        #elif a === b
+        line 3
+        #elif !status
+        line 4
+        #else
+        line 5
+        #end
+        line 6`;
+
+        const text = parse(template, this.sandbox);
+        expect(text).to.eq(`line 1
+        line 5
+        line 6`);
+    });
+
+    it('expect nested elif to be parsed correctly', function() {
+        const template = `line 1
+        #if a < b
+        line 2
+        #if !status
+        line 3
+        #elif a === b
+        line 4
+        #else
+        line 5
+        #end
+        #else
+        line 6
+        #end
+        line 7`;
+
+        const text = parse(template, this.sandbox);
+        expect(text).to.eq(`line 1
+        line 2
+        line 5
+        line 7`);
+    });
 });
