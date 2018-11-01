@@ -13,7 +13,9 @@ describe('piping test', function() {
                 i
                     .split('')
                     .reverse()
-                    .join('')
+                    .join(''),
+            multi: (i, j) => i * j,
+            div: (i, j) => i / j
         });
     });
 
@@ -35,5 +37,12 @@ describe('piping test', function() {
         const template = '<%a|upper%>';
 
         expect(() => parse(template, this.sandbox)).to.throw('not a function');
+    });
+
+    it('expect bind/arrow piping to be parsed correctly', function() {
+        const template = '<%a|multi.bind(null,4)|i=>div(i,2)%>';
+
+        const text = parse(template, this.sandbox);
+        expect(text).to.eq('2');
     });
 });
