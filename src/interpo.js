@@ -2,13 +2,11 @@ const exec = require('./exec');
 
 module.exports = function(template, sandbox, options) {
     return template.replace(/\$\{((?:[^{}\\]|\\.)+)\}/g, (_, code) => {
+        const match = /^\s*%(.+?)%\s*$/.exec(code);
+        if (match != null) {
+            return '${' + match[1] + '}';
+        }
         try {
-            if (options && options.safeInterpo) {
-                code = code.trim();
-
-                return code in sandbox ? sandbox[code] : _;
-            }
-
             return exec(code, sandbox);
         } catch (error) {
             if (options && options.silent) {

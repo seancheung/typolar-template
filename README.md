@@ -65,6 +65,12 @@ Interpolate
 ${code}
 ```
 
+Escaping
+
+```bash
+${%code%} --> ${code}
+```
+
 Piping/Filter
 
 ```html

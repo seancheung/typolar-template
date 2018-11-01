@@ -15,10 +15,6 @@ interface Options {
      * Bypass non-syntax error
      */
     silent: boolean;
-    /**
-     * Use var replace in interpo instead of eval
-     */
-    safeInterpo: boolean;
 }
 
 export = parse;

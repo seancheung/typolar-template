@@ -14,13 +14,6 @@ describe('interpo test', function() {
         expect(text).to.eq('3');
     });
 
-    it('expect safe interpo to be parsed correctly', function() {
-        const template = '${a}${c}';
-
-        const text = parse(template, this.sandbox, { safeInterpo: true });
-        expect(text).to.eq('1${c}');
-    });
-
     it('expect ternary interpo to be parsed correctly', function() {
         const template = '${ a > b? "yes" : "no"}\nstatus = ${status}';
 
@@ -32,5 +25,19 @@ describe('interpo test', function() {
         const template = '${c + a}';
 
         expect(() => parse(template, this.sandbox)).to.throw('not defined');
+    });
+
+    it('expect silent interpo to be parsed correctly', function() {
+        const template = '${a}${c}';
+
+        const text = parse(template, this.sandbox, { silent: true });
+        expect(text).to.eq('1${c}');
+    });
+
+    it('expect escaped interpo to be parsed correctly', function() {
+        const template = '${a}${%b%}';
+
+        const text = parse(template, this.sandbox);
+        expect(text).to.eq('1${b}');
     });
 });
